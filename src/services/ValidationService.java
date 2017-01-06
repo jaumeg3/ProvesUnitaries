@@ -7,7 +7,6 @@ import kiosk.ActivationCard;
  */
 
 public interface ValidationService {
-
     boolean validate(ActivationCard card);
     void deactivate(ActivationCard card);
 }
