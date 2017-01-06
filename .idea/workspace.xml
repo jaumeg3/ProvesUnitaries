@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9827a6d2-8b63-4bf0-b6e3-d9dbc3a22d12" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/SignatureService.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/services/MailerService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -22,23 +22,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="VotesDB.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/services/VotesDB.java">
+      <file leaf-file-name="MailerService.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/services/MailerService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="13" column="1" lean-forward="false" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SignatureService.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/services/SignatureService.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+            <state relative-caret-position="198">
+              <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -82,6 +70,7 @@
         <option value="$PROJECT_DIR$/src/services/VotePrinter.java" />
         <option value="$PROJECT_DIR$/src/services/VotesDB.java" />
         <option value="$PROJECT_DIR$/src/services/SignatureService.java" />
+        <option value="$PROJECT_DIR$/src/services/MailerService.java" />
       </list>
     </option>
   </component>
@@ -845,7 +834,7 @@
       <workItem from="1483532009853" duration="1180000" />
       <workItem from="1483715981969" duration="824000" />
       <workItem from="1483716839387" duration="3906000" />
-      <workItem from="1483722123869" duration="955000" />
+      <workItem from="1483722123869" duration="1065000" />
     </task>
     <task id="LOCAL-00001" summary="Apartat 1 Finalitzat. Creació de les classes Signature, Party, Mail Address.&#10;Creació del paquet kiosk amb la classe Activation Card i la seva classe de test. Implementació dels metodes erase(), isActive() i getCode().">
       <created>1483720710307</created>
@@ -875,7 +864,14 @@
       <option name="project" value="LOCAL" />
       <updated>1483722972625</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Creació Interfície Signature Service.">
+      <created>1483723100403</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1483723100403</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -905,7 +901,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10170000" />
+    <option name="totallyTimeSpent" value="10280000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -980,7 +976,8 @@
     <MESSAGE value="Inici Apartat 2 de la pràctica. Creació Interfície Validation Service." />
     <MESSAGE value="Creació Interfície VotePrinter." />
     <MESSAGE value="Creació Interfície Votes DB." />
-    <option name="LAST_COMMIT_MESSAGE" value="Creació Interfície Votes DB." />
+    <MESSAGE value="Creació Interfície Signature Service." />
+    <option name="LAST_COMMIT_MESSAGE" value="Creació Interfície Signature Service." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1321,6 +1318,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/services/MailerService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
