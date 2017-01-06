@@ -21,21 +21,28 @@ public class ActivationCardTest {
     }
 
     @Test
-    public void erase() throws Exception {
+    public void eraseTest() throws Exception {
         System.out.print("erase Test");
         this.testingCard.erase();
         assertTrue(!this.testingCard.isActive());
     }
 
     @Test
-    public void isActive() throws Exception {
+    public void isActiveTest() throws Exception {
         System.out.print("isActive Test");
         assertTrue(this.testingCard.isActive());
     }
 
     @Test
-    public void getCode() throws Exception {
+    public void getCodeTest() throws Exception {
         System.out.print("getCode Test");
         assertEquals("00000",this.testingCard.getCode());
+    }
+
+    @Test
+    public void wrongGetCodeTest() throws Exception {
+        System.out.print("Wrong getCode Test");
+        String wrong = "00001";
+        assertEquals(1 , wrong.compareTo(this.testingCard.getCode()));
     }
 }
