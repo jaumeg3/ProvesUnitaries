@@ -1,6 +1,5 @@
 package kiosk;
 
-
 import data.*;
 import services.*;
 
@@ -9,46 +8,61 @@ import services.*;
  */
 
 public class VotingMachine {
+    ValidationServiceImpl validationService;
+    VotePrinterImpl votePrinter;
+    VotesDBImpl votesDB;
+    SignatureServiceImpl signatureService;
+    MailerServiceImpl mailerService;
 
     // ????????
 
+    public static VotingMachine newVotingMachine() {
+        VotingMachine votingMachine = new VotingMachine();
+        votingMachine.setValidationService(new ValidationServiceImpl());
+        votingMachine.setVotePrinter(new VotePrinterImpl());
+        votingMachine.setVotesDB(new VotesDBImpl());
+        votingMachine.setSignatureService(new SignatureServiceImpl());
+        votingMachine.setMailerService(new MailerServiceImpl());
+        return votingMachine;
+    }
+
     public VotingMachine() {
-        // ?????
+
     }
 
-    public void setValidationService(ValidationService validationService) {
-        // ?????????????????
+    public void setValidationService(ValidationServiceImpl validationService) {
+        this.validationService = validationService;
     }
 
-    public void setVotePrinter(VotePrinter votePrinter) {
-        // ?????????????????
+    public void setVotePrinter(VotePrinterImpl votePrinter) {
+        this.votePrinter = votePrinter;
     }
 
-    public void setVotesDB(VotesDB votesDB) {
-        // ?????????????????
+    public void setVotesDB(VotesDBImpl votesDB) {
+        this.votesDB = votesDB;
     }
 
-    public void setSignatureService(SignatureService signatureService) {
-        // ?????????????????
+    public void setSignatureService(SignatureServiceImpl signatureService) {
+        this.signatureService = signatureService;
     }
 
-    public void setMailerService(MailerService mailerService) {
-        // ?????????????????
+    public void setMailerService(MailerServiceImpl mailerService) {
+        this.mailerService = mailerService;
     }
 
     public void activateEmission(ActivationCard card) throws IllegalStateException {
-        // ?????????????????
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public boolean canVote() {
-        // ?????????????????
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void vote(Vote vote) throws IllegalStateException {
-        // ?????????????????
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void sendReceipt(MailAddress address) throws IllegalStateException {
-        // ?????????????????
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 }

@@ -1,4 +1,7 @@
 package data;
+
+import java.util.Arrays;
+
 /**
  * Represents a Signature.
  */
@@ -24,12 +27,12 @@ final public class Signature {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Signature signature = (Signature) o;
-        return signature.equals(signature.signature);
+        Signature sign = (Signature) o;
+        return Arrays.equals(signature, sign.signature);
     }
 
     @Override
     public int hashCode() {
-        return signature.hashCode();
+        return Arrays.hashCode(signature);
     }
 }

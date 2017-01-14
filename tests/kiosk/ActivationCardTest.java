@@ -4,7 +4,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jaume on 06/01/17.
@@ -45,4 +46,23 @@ public class ActivationCardTest {
         String wrong = "00001";
         assertEquals(1 , wrong.compareTo(this.testingCard.getCode()));
     }
+
+    @Test
+    public void wrongEqualsTest() throws Exception {
+        System.out.print("Wrong Equals Test");
+        assertTrue(!this.testingCard.equals(new ActivationCard("00001")));
+    }
+
+    @Test
+    public void goodEqualsTest() throws Exception {
+        System.out.print("Good Equals Test");
+        assertTrue(this.testingCard.equals(new ActivationCard("00000")));
+    }
+
+    @Test
+    public void goodEqualsTest2() throws Exception {
+        System.out.print("Good Equals Test 2");
+        assertTrue(this.testingCard.equals(this.testingCard));
+    }
+
 }
