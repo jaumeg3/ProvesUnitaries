@@ -7,9 +7,8 @@ import data.Vote;
  * Vote Printer Implementation
  */
 public class VotePrinterImpl implements VotePrinter{
-
     @Override
     public void print(Vote vote) {
-
+        System.out.print(vote);
     }
 }

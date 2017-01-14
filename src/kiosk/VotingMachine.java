@@ -8,26 +8,18 @@ import services.*;
  */
 
 public class VotingMachine {
-    ValidationServiceImpl validationService;
-    VotePrinterImpl votePrinter;
-    VotesDBImpl votesDB;
-    SignatureServiceImpl signatureService;
-    MailerServiceImpl mailerService;
-
-    // ????????
-
-    public static VotingMachine newVotingMachine() {
-        VotingMachine votingMachine = new VotingMachine();
-        votingMachine.setValidationService(new ValidationServiceImpl());
-        votingMachine.setVotePrinter(new VotePrinterImpl());
-        votingMachine.setVotesDB(new VotesDBImpl());
-        votingMachine.setSignatureService(new SignatureServiceImpl());
-        votingMachine.setMailerService(new MailerServiceImpl());
-        return votingMachine;
-    }
+    private ValidationServiceImpl validationService;
+    private VotePrinterImpl votePrinter;
+    private VotesDBImpl votesDB;
+    private SignatureServiceImpl signatureService;
+    private MailerServiceImpl mailerService;
 
     public VotingMachine() {
-
+        this.validationService = null;
+        this.votePrinter = null;
+        this.votesDB = null;
+        this.signatureService = null;
+        this.mailerService = null;
     }
 
     public void setValidationService(ValidationServiceImpl validationService) {

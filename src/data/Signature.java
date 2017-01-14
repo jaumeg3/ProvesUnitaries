@@ -19,7 +19,7 @@ final public class Signature {
     @Override
     public String toString() {
         return "Signature{" +
-                "signature='" + signature + '\'' +
+                "signature='" + Arrays.toString(signature) + '\'' +
                 '}';
     }
 

@@ -10,6 +10,6 @@ import data.Vote;
 public class SignatureServiceImpl implements SignatureService{
     @Override
     public Signature sign(Vote vote) {
-        return null;
+        return new Signature(vote.getOption().getBytes());
     }
 }
