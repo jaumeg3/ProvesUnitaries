@@ -3,8 +3,6 @@ package data;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by jaume on 14/01/17.
  * Mail Address Test

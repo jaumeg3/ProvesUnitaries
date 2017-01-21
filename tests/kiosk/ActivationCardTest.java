@@ -1,6 +1,5 @@
 package kiosk;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,12 +56,6 @@ public class ActivationCardTest {
     public void goodEqualsTest() throws Exception {
         System.out.print("Good Equals Test");
         assertTrue(this.testingCard.equals(new ActivationCard("00000")));
-    }
-
-    @Test
-    public void goodEqualsTest2() throws Exception {
-        System.out.print("Good Equals Test 2");
-        assertTrue(this.testingCard.equals(this.testingCard));
     }
 
 }

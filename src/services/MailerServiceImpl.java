@@ -16,6 +16,6 @@ public class MailerServiceImpl implements MailerService{
     public void send(MailAddress address, Signature signature) {
         this.address = address;
         this.signature = signature;
-        this.status = true;
+        boolean status = true;
     }
 }

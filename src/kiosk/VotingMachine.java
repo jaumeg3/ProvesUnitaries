@@ -13,6 +13,9 @@ public class VotingMachine {
     private VotesDBImpl votesDB;
     private SignatureServiceImpl signatureService;
     private MailerServiceImpl mailerService;
+    private boolean machineActive;
+    private boolean hasVoted;
+    private Vote vote;
 
     public VotingMachine() {
         this.validationService = null;
@@ -20,6 +23,9 @@ public class VotingMachine {
         this.votesDB = null;
         this.signatureService = null;
         this.mailerService = null;
+        this.machineActive = false;
+        this.hasVoted = false;
+        this.vote = null;
     }
 
     public void setValidationService(ValidationServiceImpl validationService) {
@@ -43,18 +49,32 @@ public class VotingMachine {
     }
 
     public void activateEmission(ActivationCard card) throws IllegalStateException {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (validationService.validate(card) && !this.machineActive) {
+            this.machineActive = true;
+        }
+        else {
+            throw new IllegalStateException();
+        }
     }
 
-    public boolean canVote() {
-        throw new UnsupportedOperationException("Not implemented yet");
+    private boolean canVote() {
+        return this.machineActive;
     }
 
     public void vote(Vote vote) throws IllegalStateException {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (canVote()) {
+            this.vote = vote;
+            this.hasVoted = true;
+            this.machineActive = false;
+        }
+        else {
+            throw new IllegalStateException();
+        }
     }
 
     public void sendReceipt(MailAddress address) throws IllegalStateException {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (this.hasVoted && !this.machineActive) {
+            this.mailerService.send(address, signatureService.sign(this.vote));
+        }
     }
 }
