@@ -19,12 +19,12 @@ import static org.junit.Assert.*;
  * Send Receipt Test. Method from Voting Machine.
  */
 public class SendReceiptTest {
-    VotingMachine votingMachine;
-    MailAddress mailAddress;
-    ActivationCard card;
-    TrueValidationServiceMock trueValidation;
-    MailerServiceImpl mailerService;
-    SignatureServiceImpl signatureService;
+    private VotingMachine votingMachine;
+    private MailAddress mailAddress;
+    private ActivationCard card;
+    private TrueValidationServiceMock trueValidation;
+    private MailerServiceImpl mailerService;
+    private SignatureServiceImpl signatureService;
 
 
     @Before

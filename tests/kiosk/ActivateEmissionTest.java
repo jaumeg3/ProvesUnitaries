@@ -2,10 +2,7 @@ package kiosk;
 
 import mocks.FalseValidationServiceMock;
 import mocks.TrueValidationServiceMock;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import services.ValidationServiceImpl;
 
 import static org.junit.Assert.*;
 

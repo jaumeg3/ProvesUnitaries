@@ -2,6 +2,7 @@ package kiosk;
 
 import data.Vote;
 import mocks.TrueValidationServiceMock;
+import mocks.VotePrinterMock;
 import org.junit.Before;
 import org.junit.Test;
 import services.*;
@@ -17,8 +18,8 @@ import static org.junit.Assert.*;
  * Vote Test. Method from Voting Machine.
  */
 public class VoteTest {
-    Vote vote;
-    VotingMachine votingMachine;
+    private Vote vote;
+    private VotingMachine votingMachine;
 
     @Before
     public void setUp() throws Exception {
@@ -35,7 +36,7 @@ public class VoteTest {
     public void TestGoodVote() throws Exception {
         ActivationCard card = new ActivationCard("Any");
         TrueValidationServiceMock trueValidationServiceMock = new TrueValidationServiceMock();
-        VotePrinterImpl votePrinter = new VotePrinterImpl();
+        VotePrinterMock votePrinter = new VotePrinterMock();
         VotesDBImpl votesDB = new VotesDBImpl();
         this.votingMachine.setVotePrinter(votePrinter);
         this.votingMachine.setVotesDB(votesDB);
@@ -45,7 +46,8 @@ public class VoteTest {
         List<Vote> lst = new ArrayList<>();
         lst.add(this.vote);
         assertEquals(votesDB.getVotes(),lst);
-        // Print
+        assertEquals(votePrinter.outContentMock.toString(),vote.toString());
+        assertEquals(votePrinter.errContentMock.toString(),"");
         assertTrue(votingMachine.hasVoted);
     }
 

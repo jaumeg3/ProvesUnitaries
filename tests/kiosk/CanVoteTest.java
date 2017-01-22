@@ -12,9 +12,9 @@ import static org.junit.Assert.*;
  * Can Vote Test. Method from Voting Machine.
  */
 public class CanVoteTest {
-    VotingMachine votingMachine;
-    TrueValidationServiceMock trueValidationServiceMock;
-    ActivationCard card;
+    private VotingMachine votingMachine;
+    private TrueValidationServiceMock trueValidationServiceMock;
+    private ActivationCard card;
 
     @Before
     public void setUp() throws Exception {

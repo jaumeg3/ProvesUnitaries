@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintStream;
 
 import static org.junit.Assert.*;
@@ -16,8 +15,8 @@ import static org.junit.Assert.*;
  * Vote Printer Test
  */
 public class VotePrinterImplTest {
-    VotePrinterImpl votePrinter;
-    Vote vote;
+    private VotePrinterImpl votePrinter;
+    private Vote vote;
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 

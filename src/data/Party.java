@@ -5,7 +5,7 @@ package data;
 final public class Party {
     private final String name;
 
-    public Party(String name) {
+    Party(String name) {
         this.name = name;
     }
 

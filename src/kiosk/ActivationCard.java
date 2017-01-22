@@ -22,7 +22,7 @@ public class ActivationCard {
         return this.cardState;
     }
 
-    public String getCode() {
+    String getCode() {
         return this.code;
     }
 

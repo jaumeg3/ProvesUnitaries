@@ -15,9 +15,9 @@ import static org.junit.Assert.*;
  * Votes DB Implementation Test
  */
 public class VotesDBImplTest {
-    VotesDBImpl votesDB;
-    Vote vote;
-    List<Vote> expected;
+    private VotesDBImpl votesDB;
+    private Vote vote;
+    private List<Vote> expected;
 
     @Before
     public void setUp() throws Exception {

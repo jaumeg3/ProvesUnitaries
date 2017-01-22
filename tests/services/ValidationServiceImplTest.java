@@ -12,8 +12,8 @@ import static org.junit.Assert.*;
  * Validation Service Implementation
  */
 public class ValidationServiceImplTest {
-    ActivationCard card;
-    ValidationServiceImpl validationService;
+    private ActivationCard card;
+    private ValidationServiceImpl validationService;
 
     @Before
     public void setUp() throws Exception {

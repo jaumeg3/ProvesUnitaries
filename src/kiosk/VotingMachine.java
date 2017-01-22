@@ -14,11 +14,11 @@ public class VotingMachine {
     private SignatureServiceImpl signatureService;
     private MailerServiceImpl mailerService;
     private boolean machineActive;
-    public boolean hasVoted;
+    boolean hasVoted;
     private Vote vote;
     private ActivationCard card;
 
-    public VotingMachine() {
+    VotingMachine() {
         this.validationService = null;
         this.votePrinter = null;
         this.votesDB = null;
@@ -29,36 +29,37 @@ public class VotingMachine {
         this.vote = null;
     }
 
-    public void setValidationService(ValidationServiceImpl validationService) {
+    void setValidationService(ValidationServiceImpl validationService) {
         this.validationService = validationService;
     }
 
-    public void setVotePrinter(VotePrinterImpl votePrinter) {
+    void setVotePrinter(VotePrinterImpl votePrinter) {
         this.votePrinter = votePrinter;
     }
 
-    public void setVotesDB(VotesDBImpl votesDB) {
+    void setVotesDB(VotesDBImpl votesDB) {
         this.votesDB = votesDB;
     }
 
-    public void setSignatureService(SignatureServiceImpl signatureService) {
+    void setSignatureService(SignatureServiceImpl signatureService) {
         this.signatureService = signatureService;
     }
 
-    public void setMailerService(MailerServiceImpl mailerService) {
+    void setMailerService(MailerServiceImpl mailerService) {
         this.mailerService = mailerService;
     }
 
-    public void activateEmission(ActivationCard card) throws IllegalStateException {
+    void activateEmission(ActivationCard card) throws IllegalStateException {
         if (validationService.validate(card) && !this.machineActive) {
             this.machineActive = true;
+            this.card = card;
         }
         else {
             throw new IllegalStateException();
         }
     }
 
-    public boolean canVote() {
+    boolean canVote() {
         return this.machineActive;
     }
 
@@ -69,15 +70,16 @@ public class VotingMachine {
             this.votePrinter.print(vote);
             this.hasVoted = true;
             this.machineActive = false;
+            this.validationService.deactivate(this.card);
         }
         else {
             throw new IllegalStateException();
         }
     }
 
-    public void sendReceipt(MailAddress address) throws IllegalStateException {
+    void sendReceipt(MailAddress address) throws IllegalStateException {
         if (this.hasVoted && !canVote()) {
-            this.mailerService.send(address,new Signature(this.vote.toString().getBytes()));
+            this.mailerService.send(address,this.signatureService.sign(this.vote));
         }
         else {
             throw new IllegalStateException();
