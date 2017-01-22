@@ -1,14 +1,15 @@
 package kiosk;
 
-import com.sun.jndi.cosnaming.IiopUrl;
 import data.MailAddress;
+import data.Signature;
 import data.Vote;
 import mocks.TrueValidationServiceMock;
 import org.junit.Before;
 import org.junit.Test;
-import services.MailerService;
 import services.MailerServiceImpl;
 import services.SignatureServiceImpl;
+import services.VotePrinterImpl;
+import services.VotesDBImpl;
 
 import static org.junit.Assert.*;
 
@@ -33,6 +34,7 @@ public class SendReceiptTest {
         this.mailAddress = new MailAddress("AnyAddress");
         this.trueValidation = new TrueValidationServiceMock();
         this.mailerService = new MailerServiceImpl();
+        this.signatureService = new SignatureServiceImpl();
     }
 
     @Test(expected = IllegalStateException.class)
@@ -54,12 +56,15 @@ public class SendReceiptTest {
         this.votingMachine.setValidationService(this.trueValidation);
         this.votingMachine.setSignatureService(this.signatureService);
         this.votingMachine.setMailerService(this.mailerService);
+        this.votingMachine.setVotesDB(new VotesDBImpl());
+        this.votingMachine.setVotePrinter(new VotePrinterImpl());
 
         this.votingMachine.activateEmission(this.card);
         this.votingMachine.vote(vote);
         this.votingMachine.sendReceipt(this.mailAddress);
         assertEquals(this.mailAddress,this.mailerService.address);
-        //assertEquals(this.signatureService.sign(vote), this.mailerService.signature);
-        //assertTrue(this.mailerService.status);
+        Signature expect = this.signatureService.sign(vote);
+        assertEquals(expect, this.mailerService.signature);
+        assertTrue(this.mailerService.status);
     }
 }

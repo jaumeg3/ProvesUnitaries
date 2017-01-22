@@ -24,7 +24,7 @@ public class SignatureServiceImplTest {
 
     @Test
     public void TestSign() throws Exception {
-        byte[] expected = this.vote.getOption().getBytes();
+        byte[] expected = this.vote.toString().getBytes();
         assertEquals(new Signature(expected), this.signatureService.sign(this.vote));
     }
 

@@ -8,8 +8,9 @@ import data.Vote;
  * Signature Service Implementation
  */
 public class SignatureServiceImpl implements SignatureService{
+
     @Override
     public Signature sign(Vote vote) {
-        return new Signature(vote.getOption().getBytes());
+        return new Signature(vote.toString().getBytes());
     }
 }

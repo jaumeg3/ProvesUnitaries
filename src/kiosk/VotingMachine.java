@@ -77,7 +77,7 @@ public class VotingMachine {
 
     public void sendReceipt(MailAddress address) throws IllegalStateException {
         if (this.hasVoted && !canVote()) {
-            this.mailerService.send(address, signatureService.sign(this.vote));
+            this.mailerService.send(address,new Signature(this.vote.toString().getBytes()));
         }
         else {
             throw new IllegalStateException();

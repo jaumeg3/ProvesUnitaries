@@ -9,8 +9,8 @@ import data.Signature;
  */
 public class MailerServiceImpl implements MailerService{
     public MailAddress address;
-    Signature signature;
-    boolean status = false;
+    public Signature signature;
+    public boolean status = false;
 
     @Override
     public void send(MailAddress address, Signature signature) {
