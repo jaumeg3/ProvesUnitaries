@@ -1,12 +1,14 @@
 package kiosk;
 
+import com.sun.jndi.cosnaming.IiopUrl;
 import data.MailAddress;
 import data.Vote;
 import mocks.TrueValidationServiceMock;
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.swing.table.TableRowSorter;
+import services.MailerService;
+import services.MailerServiceImpl;
+import services.SignatureServiceImpl;
 
 import static org.junit.Assert.*;
 
@@ -20,6 +22,9 @@ public class SendReceiptTest {
     MailAddress mailAddress;
     ActivationCard card;
     TrueValidationServiceMock trueValidation;
+    MailerServiceImpl mailerService;
+    SignatureServiceImpl signatureService;
+
 
     @Before
     public void setUp() throws Exception {
@@ -27,6 +32,7 @@ public class SendReceiptTest {
         this.card = new ActivationCard("AnyCode");
         this.mailAddress = new MailAddress("AnyAddress");
         this.trueValidation = new TrueValidationServiceMock();
+        this.mailerService = new MailerServiceImpl();
     }
 
     @Test(expected = IllegalStateException.class)
@@ -44,6 +50,16 @@ public class SendReceiptTest {
 
     @Test
     public void TestGoodSendReceipt() throws Exception {
+        Vote vote = new Vote("AnyVote");
+        this.votingMachine.setValidationService(this.trueValidation);
+        this.votingMachine.setSignatureService(this.signatureService);
+        this.votingMachine.setMailerService(this.mailerService);
 
+        this.votingMachine.activateEmission(this.card);
+        this.votingMachine.vote(vote);
+        this.votingMachine.sendReceipt(this.mailAddress);
+        assertEquals(this.mailAddress,this.mailerService.address);
+        //assertEquals(this.signatureService.sign(vote), this.mailerService.signature);
+        //assertTrue(this.mailerService.status);
     }
 }

@@ -14,4 +14,8 @@ public class TrueValidationServiceMock extends ValidationServiceImpl{
     public boolean validate(ActivationCard card) {
         return true;
     }
+
+    public void deactivate(ActivationCard card) {
+        card.erase();
+    }
 }

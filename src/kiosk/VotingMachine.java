@@ -14,7 +14,7 @@ public class VotingMachine {
     private SignatureServiceImpl signatureService;
     private MailerServiceImpl mailerService;
     private boolean machineActive;
-    private boolean hasVoted;
+    public boolean hasVoted;
     private Vote vote;
     private ActivationCard card;
 
@@ -69,7 +69,6 @@ public class VotingMachine {
             this.votePrinter.print(vote);
             this.hasVoted = true;
             this.machineActive = false;
-            this.validationService.deactivate(this.card);
         }
         else {
             throw new IllegalStateException();

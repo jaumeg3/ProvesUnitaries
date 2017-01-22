@@ -1,12 +1,15 @@
 package kiosk;
 
 import data.Vote;
+import mocks.TrueValidationServiceMock;
 import org.junit.Before;
 import org.junit.Test;
-import services.VotePrinter;
-import services.VotePrinterImpl;
-import services.VotesDB;
-import services.VotesDBImpl;
+import services.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by jaume on 22/01/17.
@@ -30,7 +33,20 @@ public class VoteTest {
 
     @Test
     public void TestGoodVote() throws Exception {
-
+        ActivationCard card = new ActivationCard("Any");
+        TrueValidationServiceMock trueValidationServiceMock = new TrueValidationServiceMock();
+        VotePrinterImpl votePrinter = new VotePrinterImpl();
+        VotesDBImpl votesDB = new VotesDBImpl();
+        this.votingMachine.setVotePrinter(votePrinter);
+        this.votingMachine.setVotesDB(votesDB);
+        this.votingMachine.setValidationService(trueValidationServiceMock);
+        this.votingMachine.activateEmission(card);
+        this.votingMachine.vote(this.vote);
+        List<Vote> lst = new ArrayList<>();
+        lst.add(this.vote);
+        assertEquals(votesDB.getVotes(),lst);
+        // Print
+        assertTrue(votingMachine.hasVoted);
     }
 
 

@@ -8,7 +8,7 @@ import data.Signature;
  * Mailer Service Implementation
  */
 public class MailerServiceImpl implements MailerService{
-    MailAddress address;
+    public MailAddress address;
     Signature signature;
     boolean status = false;
 
