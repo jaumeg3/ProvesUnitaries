@@ -16,8 +16,9 @@ public class VotingMachine {
     private boolean machineActive;
     private boolean hasVoted;
     private Vote vote;
+    private ActivationCard card;
 
-    VotingMachine() {
+    public VotingMachine() {
         this.validationService = null;
         this.votePrinter = null;
         this.votesDB = null;
@@ -28,7 +29,7 @@ public class VotingMachine {
         this.vote = null;
     }
 
-    void setValidationService(ValidationServiceImpl validationService) {
+    public void setValidationService(ValidationServiceImpl validationService) {
         this.validationService = validationService;
     }
 
@@ -48,7 +49,7 @@ public class VotingMachine {
         this.mailerService = mailerService;
     }
 
-    void activateEmission(ActivationCard card) throws IllegalStateException {
+    public void activateEmission(ActivationCard card) throws IllegalStateException {
         if (validationService.validate(card) && !this.machineActive) {
             this.machineActive = true;
         }
@@ -57,7 +58,7 @@ public class VotingMachine {
         }
     }
 
-    boolean canVote() {
+    public boolean canVote() {
         return this.machineActive;
     }
 
@@ -68,6 +69,7 @@ public class VotingMachine {
             this.votePrinter.print(vote);
             this.hasVoted = true;
             this.machineActive = false;
+            this.validationService.deactivate(this.card);
         }
         else {
             throw new IllegalStateException();
@@ -75,8 +77,11 @@ public class VotingMachine {
     }
 
     public void sendReceipt(MailAddress address) throws IllegalStateException {
-        if (this.hasVoted && !this.machineActive) {
+        if (this.hasVoted && !canVote()) {
             this.mailerService.send(address, signatureService.sign(this.vote));
+        }
+        else {
+            throw new IllegalStateException();
         }
     }
 }

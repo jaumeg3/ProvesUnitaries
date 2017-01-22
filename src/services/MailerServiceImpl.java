@@ -8,14 +8,14 @@ import data.Signature;
  * Mailer Service Implementation
  */
 public class MailerServiceImpl implements MailerService{
-    private MailAddress address;
-    private Signature signature;
-    private boolean status = false;
+    MailAddress address;
+    Signature signature;
+    boolean status = false;
 
     @Override
     public void send(MailAddress address, Signature signature) {
         this.address = address;
         this.signature = signature;
-        boolean status = true;
+        this.status = true;
     }
 }
