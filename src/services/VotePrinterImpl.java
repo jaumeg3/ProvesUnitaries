@@ -9,6 +9,6 @@ import data.Vote;
 public class VotePrinterImpl implements VotePrinter{
     @Override
     public void print(Vote vote) {
-        System.out.print(vote);
+        System.out.print(vote.getOption());
     }
 }

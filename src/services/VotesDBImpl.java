@@ -14,7 +14,7 @@ public class VotesDBImpl implements VotesDB{
     private List<Vote> dataBase;
 
     public VotesDBImpl() {
-        dataBase = new ArrayList<>();
+        this.dataBase = new ArrayList<>();
     }
 
     @Override

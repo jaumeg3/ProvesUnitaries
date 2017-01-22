@@ -64,6 +64,8 @@ public class VotingMachine {
     public void vote(Vote vote) throws IllegalStateException {
         if (canVote()) {
             this.vote = vote;
+            this.votesDB.registerVote(vote);
+            this.votePrinter.print(vote);
             this.hasVoted = true;
             this.machineActive = false;
         }
