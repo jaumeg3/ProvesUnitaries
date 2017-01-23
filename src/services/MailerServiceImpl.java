@@ -12,6 +12,11 @@ public class MailerServiceImpl implements MailerService{
     public Signature signature;
     public boolean status = false;
 
+    /**
+     * Implement send method.
+     * @param address Parameter with the mail address
+     * @param signature Parameter with the signature
+     */
     @Override
     public void send(MailAddress address, Signature signature) {
         this.address = address;

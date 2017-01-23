@@ -7,6 +7,11 @@ import data.Vote;
  * Vote Printer Implementation
  */
 public class VotePrinterImpl implements VotePrinter{
+
+    /**
+     * Print Method Implementation. Print the vote.
+     * @param vote
+     */
     @Override
     public void print(Vote vote) {
         System.out.print(vote.getOption());
