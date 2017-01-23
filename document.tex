@@ -76,7 +76,7 @@ Juan Manuel Gimeno Illa
 \section{Contingut}
 Per la realització d'aquesta pràctica he dividit el contingut amb dos directoris. El directori \textit{src} i el directori \textit{tests}. En el directori \textit{src} s'hi poden trobar els fitxers escrits amb llenguatge java  que simulen el funcionament d'un sistema de votació electrònica. No he realitzat la part opcional de introduir el sistema de autenticació del iris per fer una mala planificació del temps a la hora de realitzar la pràctica.\\
 En el directori \textit{tests} estan implementats els jocs de tests per provar la pràctica. En aquest document intentaré explicar el que he volgut provar per cada classe i/o mètodes del sistema.\\\\
-També hi ha la carpeta \textit{.git} on es poden veure els diferents \textbf{commits} usant un sistema de control de versions. També he pujat la pràctica en el meu servei de emmagatzemament de repositoris \textbf{GitHub}\footnote{Git : \url{http://www.github.com}}.\\\\
+També hi ha la carpeta \textit{.git} on es poden veure els diferents \textbf{commits} usant un sistema de control de versions. També he pujat la pràctica en el meu servei de emmagatzemament de repositoris \textbf{GitHub}\footnote{Git : \url{https://github.com/jaumeg3/ProvesUnitaries}}.\\\\
 Seguidament explicaré els tests per cada classe.
 \begin{center}
 	\begin{figure}[!ht]
@@ -241,7 +241,7 @@ public class CanVoteTest {
 
 }
 	\end{lstlisting}
-	En aquesta classe de test comprovaré el correcte funcionament del mètode canVote de la classe VotingMachine. Per comprovar el mètode només tenim la possibilitat de comprovar si la maquina està o no activada. En cas de estar activa es podrà votar i en cas que no no es podrà votar. Per comprovar he necessitat implementar un doble que em retorni sempre true al validar la targeta. En el primer test, faig un activate emission i per tant activo la maquina i en el segon intento votar sense haver fet un activate emission i oer tant em retorna una excepció.
+	En aquesta classe de test comprovaré el correcte funcionament del mètode canVote de la classe VotingMachine. Per comprovar el mètode només tenim la possibilitat de comprovar si la maquina està o no activada. En cas de estar activa es podrà votar i en cas que no no es podrà votar. Per comprovar he necessitat implementar un doble que em retorni sempre true al validar la targeta. En el primer test, faig un activate emission i per tant activo la maquina i en el segon intento votar sense haver fet un activate emission i per tant em retorna una excepció.
 	\\\\
 	\subsubsection{Send Receipt Test}
 	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
@@ -296,4 +296,175 @@ public class SendReceiptTest {
     }
 }
 	\end{lstlisting}
+	En aquesta classe de test comprovaré el mètode send. Hi han tres possibles tests que seria que falles per culpa que no s'ha votat encara o que la maquina encara estigui connectada i preparada per votar i vulguis enviar el rebut del vot.L'altra opció es que tot sigui correcte. Per fer això necessitem un doble que ens retorni sempre vàlid el codi. En els dos primers test assegurem que falli i en l'ultim comprovem que els atributs es guardin en el Mail Service implementation.
+	\\\\
+	\subsubsection{Vote Test}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class VoteTest {
+    private Vote vote;
+    private VotingMachine votingMachine;
+
+    @Before
+    public void setUp() throws Exception {
+        this.vote = new Vote("AnyParty");
+        this.votingMachine = new VotingMachine();
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void TestBadVote() throws Exception {
+        this.votingMachine.vote(this.vote);
+    }
+
+    @Test
+    public void TestGoodVote() throws Exception {
+        ActivationCard card = new ActivationCard("Any");
+        TrueValidationServiceMock trueValidationServiceMock = new TrueValidationServiceMock();
+        VotePrinterMock votePrinter = new VotePrinterMock();
+        VotesDBImpl votesDB = new VotesDBImpl();
+        this.votingMachine.setVotePrinter(votePrinter);
+        this.votingMachine.setVotesDB(votesDB);
+        this.votingMachine.setValidationService(trueValidationServiceMock);
+        this.votingMachine.activateEmission(card);
+        this.votingMachine.vote(this.vote);
+        List<Vote> lst = new ArrayList<>();
+        lst.add(this.vote);
+        assertEquals(votesDB.getVotes(),lst);
+        assertEquals(votePrinter.outContentMock.toString(),vote.toString());
+        assertEquals(votePrinter.errContentMock.toString(),"");
+        assertTrue(votingMachine.hasVoted);
+    }
+}
+	\end{lstlisting}
+	En aquesta classe del mètode vote comprovem l'acció principal del sistema que és efectuar el vot. Només hi han dos possibles situacions, o pots votar o no. Per tant, per provar que no podem votar crearem un voting machine i intentarem votar sense haver activat la maquina. L'altra possible situació es que funciona i per tant comprovarem que s'enregistra bé el vot i que s'imprimeix correctament el vot. Després comprovem que hem votat.
+	\newpage
+	\subsection{Paquet services}
+	\subsubsection{Mailer Service Implementation Test}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class MailerServiceImplTest {
+
+    @Test
+    public void TestSend() throws Exception {
+        MailAddress address = new MailAddress("AnyAddress");
+        Signature signature = new Signature("Any".getBytes());
+        MailerServiceImpl mailerService = new MailerServiceImpl();
+        mailerService.send(address,signature);
+        assertEquals(address,mailerService.address);
+        assertEquals(signature,mailerService.signature);
+        assertTrue(mailerService.status);
+    }
+
+}
+	\end{lstlisting}
+	En aquest test comprovo que funcioni correctament la implementació del Mail Service. Creo els paràmetres necessaris per inicialitzar el Mail Address i després comprovo que els paràmetres que he introduït són iguals que els que s'han guardat en l'objecte Mail Address creat.
+	\\\\
+	\subsubsection{Signature Service Implementation Test}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class SignatureServiceImplTest {
+    private Vote vote;
+    private SignatureServiceImpl signatureService;
+
+    @Before
+    public void setUp() throws Exception {
+        this.vote = new Vote("any");
+        this.signatureService = new SignatureServiceImpl();
+    }
+
+    @Test
+    public void TestSign() throws Exception {
+        byte[] expected = this.vote.toString().getBytes();
+        assertEquals(new Signature(expected), this.signatureService.sign(this.vote));
+    }
+
+}
+	\end{lstlisting}
+	En aquesta classe provarem que funciona correctament el signature service. En aquest test comprovarem que la signatura d'un test és faci correctament. Per això, inicialitzarem els paràmetres necessaris i crearem l'objecte. Després comprovarem que la signatura que ens retornarà l'objecte coincideixi amb l'esperada.
+	\newpage
+	\subsubsection{Validate Service Implementation Test}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class ValidationServiceImplTest {
+    private ActivationCard card;
+    private ValidationServiceImpl validationService;
+
+    @Before
+    public void setUp() throws Exception {
+        this.card = new ActivationCard("anyCode");
+        this.validationService = new ValidationServiceImpl();
+    }
+
+    @Test
+    public void TestValidate() throws Exception {
+        assertTrue(this.validationService.validate(this.card));
+    }
+
+    @Test
+    public void TestDeactivate() throws Exception {
+        this.validationService.deactivate(this.card);
+        assertTrue(!this.validationService.validate(this.card));
+    }
+
+}
+	\end{lstlisting}
+	En aquest test comprovarem que la implementació del Validate Service ens funcioni tal com volem. Per això provarem que quan es validi una targeta el seu estatus sigui true i després provarem que si la desactivem, el seu estatus sigui desactivat.
+	\\\\
+	\subsubsection{Vote Printer Implementation Test}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class VotePrinterImplTest {
+    private VotePrinterImpl votePrinter;
+    private Vote vote;
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+
+    @Before
+    public void setUp() throws Exception {
+        this.votePrinter = new VotePrinterImpl();
+        this.vote = new Vote("AnyParty");
+        System.setOut(new PrintStream(outContent));
+        System.setErr(new PrintStream(errContent));
+
+    }
+
+    @Test
+    public void TestPrint() throws Exception {
+        this.votePrinter.print(this.vote);
+        assertEquals("AnyParty",this.outContent.toString());
+        assertEquals("",this.errContent.toString());
+    }
+
+}
+	\end{lstlisting}
+	En aquesta classe comprovarem la funció print de la implementació del Vote Printer. Redireccionarem la sortida per defecte i la sortida d'errors i comprovarem que l'output sigui igual al string que esperàvem i també que la sortida d'errors sigui nul·la.
+	\\\\
+	\subsubsection{Votes DB Implementation Test}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class VotesDBImplTest {
+    private VotesDBImpl votesDB;
+    private Vote vote;
+    private List<Vote> expected;
+
+    @Before
+    public void setUp() throws Exception {
+        this.votesDB = new VotesDBImpl();
+        this.vote = new Vote("Any");
+        this.expected = new ArrayList<>();
+    }
+
+    @Test
+    public void TestRegisterVote() throws Exception {
+        this.votesDB.registerVote(this.vote);
+        this.expected.add(this.vote);
+        assertEquals(this.expected,this.votesDB.getVotes());
+    }
+
+    @Test
+    public void TestGetVotes() throws Exception {
+        for (int x=0; x < 3; x++) {
+            this.votesDB.registerVote(this.vote);
+            this.expected.add(this.vote);
+        }
+        assertEquals(this.expected, this.votesDB.getVotes());
+    }
+
+}
+	\end{lstlisting}
+	En aquesta classe comprovarem la correcta utilització i implementació de la base de dades de vots. Per aquest mètode crearem un vot i una llista de vots i registrarem un vot. Després comprovarem que la llista que ens retorni contingui el vot. Després farem el mateix per a més vots.	
 \end{document}
