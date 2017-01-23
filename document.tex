@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage{ragged2e}
+\usepackage[utf8]{inputenc}
+\usepackage[catalan]{babel}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{afterpage}
+\usepackage{listings}
+\usepackage{caption}
+\graphicspath{ {Images/} }
+\usepackage{chngcntr}
+\usepackage{hyperref}
+\usepackage{lscape}
+\usepackage{enumitem}
+\usepackage{color}
+\definecolor{aurometalsaurus}{rgb}{0.43, 0.5, 0.5}
+\graphicspath{ {Images/} }
+\newcolumntype{L}{>{\arraybackslash}m{2.5cm}}
+
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\begin{document}
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Universitat de Lleida}\\[1cm] % Name of your university/college
+\includegraphics[scale=0.75]{Images/eps.png}\\[0.65cm] % Include a department/university logo - this will require the graphicx package
+\textsc{\Large Grau en Enginyeria Informàtica}\\[0.3cm] % Major heading such as course name
+\textsc{\large Enginyeria del Programari}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{\huge \bfseries Tercera pràctica d'Enginyeria del Programari}\\[0.0cm]
+% Title of your document
+\HRule \\[1cm]
+
+%----------------------------------------------------------------------------------------
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Autors:}\\
+Jaume Giralt Barbé
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Professor:} \\
+Juan Manuel Gimeno Illa
+% Supervisor's Name
+\end{flushright}
+\end{minipage}\\[4cm]
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+{\large \today}\\[3cm] % Date, change the \today to a set date if you want to be precise
+\vfill % Fill the rest of the page with whitespace
+\end{titlepage}
+\newpage
+\tableofcontents
+%\listoftables
+%\listoffigures
+\clearpage
+\newpage
+\justify
+\section{Contingut}
+Per la realització d'aquesta pràctica he dividit el contingut amb dos directoris. El directori \textit{src} i el directori \textit{tests}. En el directori \textit{src} s'hi poden trobar els fitxers escrits amb llenguatge java  que simulen el funcionament d'un sistema de votació electrònica. No he realitzat la part opcional de introduir el sistema de autenticació del iris per fer una mala planificació del temps a la hora de realitzar la pràctica.\\
+En el directori \textit{tests} estan implementats els jocs de tests per provar la pràctica. En aquest document intentaré explicar el que he volgut provar per cada classe i/o mètodes del sistema.\\\\
+També hi ha la carpeta \textit{.git} on es poden veure els diferents \textbf{commits} usant un sistema de control de versions. També he pujat la pràctica en el meu servei de emmagatzemament de repositoris \textbf{GitHub}\footnote{Git : \url{http://www.github.com}}.\\\\
+Seguidament explicaré els tests per cada classe.
+\begin{center}
+	\begin{figure}[!ht]
+		\includegraphics[scale=1]{Images/git.jpg}
+	\end{figure}
+\end{center}
+\newpage
+\section{Explicació dels tests}
+	\subsection{Paquet data}
+	\subsubsection{Mètodes test del paquet data}
+	Els mètodes del paquet data serveixen per emmagatzemar dades només. Hi han quatre classes en aquest paquet que són \textit{Vote, Party, MailAddress i Signature}. Aquestes classes emmagatzemen un String excepte Signature que emmagatzema un array de bytes. Per tant, els tests que he fet són similars.
+	\\
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class VoteTest {
+   	@Test
+   	public void testToString() throws Exception {
+    			Vote vote = new Vote("");
+    			String expected = "Vote{option=''}";
+    			assertEquals(expected,vote.toString());
+   	}
+
+   	@Test
+   	public void testEquals() throws Exception {
+    			Vote one = new Vote("");
+    			Vote two = new Vote("");
+    			assertTrue(one.equals(two));
+   	}
+   		
+   	@Test
+   	public void testHashCode() throws Exception {
+    			Vote one = new Vote("");
+    			Vote two = new Vote("");
+    			assertTrue(one.hashCode() == two.hashCode());
+   	}
+}   	
+	\end{lstlisting}
+	Com podem veure he fet tres tests.
+	\begin{itemize}
+		\item \textbf{testToString:} En aquest test creo un vot nou. Posteriorment creo un String del que espero que surti quan executi el mètode toString de la classe i posteriorment comprovo amb el mètode assertEquals si els dos Strings són iguals.
+		\item \textbf{testEquals:} En aquest test creo dos instàncies de vot i després utilitzo el mètode equals de la classe.
+		\item \textbf{testHashCode:} En aquest test també creo dues instàncies de vot i posteriorment comprovo que el hashCode siguin idèntics.
+	\end{itemize}
+	En el mètode Signature, la diferència és que al ser un array de bytes he de passar el string a un array de bytes cridant la funció \textit{GetBytes()}.
+\newpage
+\subsection{Paquet Kiosk}
+\subsubsection{Classe Activate Emission Test}
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class ActivateEmissionTest {
+
+    @Test
+    public void TestGoodActivateEmission() throws Exception {
+        TrueValidationServiceMock TrueValidation = new TrueValidationServiceMock();
+        VotingMachine votingMachine = new VotingMachine();
+        ActivationCard activationCard = new ActivationCard("Any");
+
+        votingMachine.setValidationService(TrueValidation);
+        votingMachine.activateEmission(activationCard);
+        assertTrue(votingMachine.canVote());
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void TestActivateEmission2() throws Exception {
+        FalseValidationServiceMock falseValidation = new FalseValidationServiceMock();
+        VotingMachine votingMachine = new VotingMachine();
+        ActivationCard activationCard = new ActivationCard("Any");
+
+        votingMachine.setValidationService(falseValidation);
+        votingMachine.activateEmission(activationCard);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void TestActivateEmission3() throws Exception {
+        TrueValidationServiceMock TrueValidation = new TrueValidationServiceMock();
+        VotingMachine votingMachine = new VotingMachine();
+        ActivationCard activationCard = new ActivationCard("Any");
+
+        votingMachine.setValidationService(TrueValidation);
+        votingMachine.activateEmission(activationCard);
+        votingMachine.activateEmission(activationCard);
+    }
+	\end{lstlisting}
+	En aquest test comprovaré que el mètode Activate Emission de la classe VotingMachine funcioni correctament. Mirant la implementació del mètode vaig veure convenient fer un test on funciones correctament, on el servei de validació de la targeta em donés false i on la màquina ja estigues activada. En el primer test comprovo que tot funciona correctament. Creo un doble per a que em retorni que la targeta d'activació és vàlida i activo la targeta. Després comprovo que pugui exercir el dret a vot. En els altres test primer faig que falli la validació retornant que qualsevol targeta retorni false en el doble i per tant llenci una excepció i que la maquina de votació ja estigui activa intentant activar-la dos cops.
+	\newpage
+	\subsubsection{Classe Activation Card Test}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class ActivationCardTest {
+
+    private ActivationCard testingCard;
+
+    @Before
+    public void setUp() throws Exception {
+        this.testingCard = new ActivationCard("00000");
+    }
+
+    @Test
+    public void eraseTest() throws Exception {
+        System.out.print("erase Test");
+        this.testingCard.erase();
+        assertTrue(!this.testingCard.isActive());
+    }
+
+    @Test
+    public void isActiveTest() throws Exception {
+        System.out.print("isActive Test");
+        assertTrue(this.testingCard.isActive());
+    }
+
+    @Test
+    public void getCodeTest() throws Exception {
+        System.out.print("getCode Test");
+        assertEquals("00000",this.testingCard.getCode());
+    }
+
+    @Test
+    public void wrongGetCodeTest() throws Exception {
+        System.out.print("Wrong getCode Test");
+        String wrong = "00001";
+        assertEquals(1 , wrong.compareTo(this.testingCard.getCode()));
+    }
+
+    @Test
+    public void wrongEqualsTest() throws Exception {
+        System.out.print("Wrong Equals Test");
+        assertTrue(!this.testingCard.equals(new ActivationCard("00001")));
+    }
+
+    @Test
+    public void goodEqualsTest() throws Exception {
+        System.out.print("Good Equals Test");
+        assertTrue(this.testingCard.equals(new ActivationCard("00000")));
+    }
+
+}
+	\end{lstlisting}
+	En aquesta classe provaré les funcionalitats de la classe Activation Test. Comprovaré que funcionin els mètodes isActive() i erase(). Per fer-ho tinc una variable booleana en el codi que m'indica si la targeta està activa o no. Si elimino la targeta, el codi queda desactivat. Per tant, el isActive em retornarà fals i si creo la targeta i ho comprovo si està activa em retornarà true. Per fer el getCode i el equals creo una targeta i comprovo amb codis diferents i/o iguals que em doni el resultat desitjat.
+\newpage
+	\subsubsection{Can Vote Test}
+	\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,language=Java]
+public class CanVoteTest {
+    private VotingMachine votingMachine;
+    private TrueValidationServiceMock trueValidationServiceMock;
+    private ActivationCard card;
+
+    @Before
+    public void setUp() throws Exception {
+        this.votingMachine = new VotingMachine();
+        this.trueValidationServiceMock = new TrueValidationServiceMock();
+        this.card = new ActivationCard("AnyCode");
+    }
+
+    @Test
+    public void TestGoodCanVote() throws Exception {
+        this.votingMachine.setValidationService(trueValidationServiceMock);
+        this.votingMachine.activateEmission(this.card);
+        assertTrue(this.votingMachine.canVote());
+    }
+
+    @Test
+    public void TestBadCanVote() throws Exception {
+        assertTrue(!this.votingMachine.canVote());
+    }
+
+}
+	\end{lstlisting}
+	En aquesta classe de test comprovaré el correcte funcionament del mètode canVote de la classe VotingMachine. Per comprovar el mètode només tenim la possibilitat de comprovar si la maquina està o no activada. En cas de estar activa es podrà votar i en cas que no no es podrà votar. Per comprovar he necessitat implementar un doble que em retorni sempre true al validar la targeta. En el primer test, faig un activate emission i per tant activo la maquina i en el segon intento votar sense haver fet un activate emission i oer tant em retorna una excepció.
+\end{document}

@@ -18,6 +18,9 @@ public class VotingMachine {
     private Vote vote;
     private ActivationCard card;
 
+    /**
+     * Constructor of the class
+     */
     VotingMachine() {
         this.validationService = null;
         this.votePrinter = null;
@@ -29,26 +32,51 @@ public class VotingMachine {
         this.vote = null;
     }
 
+    /**
+     * Set's the validation service
+     * @param validationService that you want
+     */
     void setValidationService(ValidationServiceImpl validationService) {
         this.validationService = validationService;
     }
 
+    /**
+     * Set's the vote printer service
+     * @param votePrinter that you want
+     */
     void setVotePrinter(VotePrinterImpl votePrinter) {
         this.votePrinter = votePrinter;
     }
 
+    /**
+     * Set's the Votes DB service
+     * @param votesDB that you want
+     */
     void setVotesDB(VotesDBImpl votesDB) {
         this.votesDB = votesDB;
     }
 
+    /**
+     * Set's the Signature service
+     * @param signatureService that you want
+     */
     void setSignatureService(SignatureServiceImpl signatureService) {
         this.signatureService = signatureService;
     }
 
+    /**
+     * Set's the mailer service
+     * @param mailerService that you want
+     */
     void setMailerService(MailerServiceImpl mailerService) {
         this.mailerService = mailerService;
     }
 
+    /**
+     * Activate the voting machine if the card is valid and the voting machine it's offline
+     * @param card Card to activate the voting machine
+     * @throws IllegalStateException if the card is invalid or the machine it's online
+     */
     void activateEmission(ActivationCard card) throws IllegalStateException {
         if (validationService.validate(card) && !this.machineActive) {
             this.machineActive = true;
@@ -59,10 +87,19 @@ public class VotingMachine {
         }
     }
 
+    /**
+     * Prove if the people can vote or not
+     * @return Boolean status of the machine
+     */
     boolean canVote() {
         return this.machineActive;
     }
 
+    /**
+     * Represent's the action of vote
+     * @param vote Is the vote
+     * @throws IllegalStateException if the people can't vote
+     */
     public void vote(Vote vote) throws IllegalStateException {
         if (canVote()) {
             this.vote = vote;
@@ -77,6 +114,11 @@ public class VotingMachine {
         }
     }
 
+    /**
+     * Send a receipt of the vote that you have done
+     * @param address Mail Address where it will send the receipt
+     * @throws IllegalStateException if you haven't vote or the machine is online
+     */
     void sendReceipt(MailAddress address) throws IllegalStateException {
         if (this.hasVoted && !canVote()) {
             this.mailerService.send(address,this.signatureService.sign(this.vote));
